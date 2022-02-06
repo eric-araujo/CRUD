@@ -2,6 +2,7 @@
 
 namespace Source;
 
+use Exception;
 use Source\Database\ConnectionDatabase;
 use PDOException;
 use PDOStatement;
@@ -14,6 +15,7 @@ class Crud
     public function __construct()
     {
         $this->connectionDatabase = ConnectionDatabase::openConnection();
+        define('DATABASE_CONNECTION_STATUS', true);
     }
 
     public function selectData(string $select, array $columnsToHide = array()): array
@@ -22,8 +24,8 @@ class Crud
         try {
             $result = $this->connectionDatabase->query($select);
 
-            foreach ($result->fetchAll() as $index => $value) {
-                $data[$index] = $value;
+            foreach ($result->fetchAll() as $columnName => $value) {
+                $data[$columnName] = $value;
             }
 
             $data = $this->hideSelectColumns($columnsToHide, $data);
@@ -44,13 +46,13 @@ class Crud
         return $data;
     }
 
-    public function saveData(array $data, string $table, array $columns = []): void
+    public function saveData(array $data, string $table, array $columns = []): bool
     {
         try {
             $insert = $this->prepareInsert($data, $table, $columns);
             $pdoStatement = $this->connectionDatabase->prepare($insert);
             $dataReadyToBeSaved = $this->mountBindValue($data, $pdoStatement);
-            $dataReadyToBeSaved->execute();
+            return $dataReadyToBeSaved->execute();
         } catch (PDOException $excecao) {
         }
     }
@@ -82,14 +84,13 @@ SQL;
         return implode(', ', $columns);
     }
 
-    public function updateData(array $data, string $table, string $where): void
+    public function updateData(array $data, string $table, string $where): bool
     {
         try {
             $update = $this->prepareUpdate($data, $table, $where);
             $pdoStatement = $this->connectionDatabase->prepare($update);
             $dataReadyToBeUpdated = $this->mountBindValue($data, $pdoStatement);
-            $dataReadyToBeUpdated->execute();
-
+            return $dataReadyToBeUpdated->execute();
         } catch (PDOException $excecao) {
         }
     }
@@ -100,7 +101,7 @@ SQL;
         return  <<<SQL
             UPDATE {$table}
             SET {$parameters}
-            WHERE {$where}
+            {$where}
 SQL;
     }
 
@@ -116,13 +117,16 @@ SQL;
         return implode(', ', $setUpdate);
     }
 
-    public function deleteData(array $data, string $table, string $where): bool
+    public function deleteData(string $table, string $where): bool
     {
+        if(empty($where)){
+            throw new Exception("You cannot delete the data without informing the where");
+        }
+
         try {
             $delete = $this->prepareDelete($table, $where);
             $pdoStatement = $this->connectionDatabase->prepare($delete);
-            $dataReadyToBeRemoved = $this->mountBindValue($data, $pdoStatement);
-            return $dataReadyToBeRemoved->execute();
+            return $pdoStatement->execute();
         } catch (PDOException $excecao) {
         }
     }
@@ -130,7 +134,7 @@ SQL;
     private function prepareDelete(string $table, string $where): string
     {
         return <<<SQL
-            DELETE FROM {$table} WHERE {$where}
+            DELETE FROM {$table} {$where}
 SQL;
     }
 
