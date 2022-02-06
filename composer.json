@@ -1,0 +1,28 @@
+{
+    "name": "eric-araujo/crud",
+    "description": "Basic project to create, read, update and delete data from an application.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eric Araújo Lima",
+            "email": "eric.araujolima@hotmail.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "Source\\": "Source/"
+        },
+        "files": [
+            "Source/Database/ConstantDatabase.php",
+            "Source/Database/LoadEnvGlobalVariable.php"
+        ]
+    }
+}
