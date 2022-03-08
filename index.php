@@ -2,9 +2,12 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Source\Crud;
+use Database\ConnectionDatabase;
+use DBUtil\Source\Crud;
 
-$crud = new Crud();
+$connection = ConnectionDatabase::openConnection();
+
+$crud = new Crud($connection);
 
 // SELECT DATA
 
@@ -15,26 +18,26 @@ foreach ($objectData as $value){
 }
 die;
 
-// SAVE DATA
+// // SAVE DATA
 
-$data = array(
-    "nm_usuario" => "ElicX2",
-    "nm_email" => "elic@gmail.com.br",
-    "nm_senha" => "123456"
-);
+// $data = array(
+//     "nm_usuario" => "ElicX2",
+//     "nm_email" => "elic@gmail.com.br",
+//     "nm_senha" => "123456"
+// );
 
-$saved = $crud->saveData($data, 'usuarios', array_keys($data));
+// $saved = $crud->saveData($data, 'usuarios', array_keys($data));
 
-die($saved);
+// die($saved);
 
-// UPDATE DATA
+// // UPDATE DATA
 
-$updated = $crud->updateData($data, 'usuarios', 'WHERE id_usuario = 4');
+// $updated = $crud->updateData($data, 'usuarios', 'WHERE id_usuario = 4');
 
-die($updated);
+// die($updated);
 
-// REMOVE DATA
+// // REMOVE DATA
 
-$deleted = $crud->deleteData('usuarios', 'WHERE id_usuario = 4');
+// $deleted = $crud->deleteData('usuarios', 'WHERE id_usuario = 4');
 
-die($deleted);
+// die($deleted);

@@ -1,20 +1,19 @@
 <?php
 
-namespace Source;
+namespace DBUtil\Source;
 
-use Exception;
-use Source\Database\ConnectionDatabase;
 use PDOException;
 use PDOStatement;
+use Exception;
 use PDO;
 
 class Crud
 {
     private PDO $connectionDatabase;
 
-    public function __construct()
-    {
-        $this->connectionDatabase = ConnectionDatabase::openConnection();
+    public function __construct(PDO $connection)
+    {        
+        $this->connectionDatabase = $connection;
         define('DATABASE_CONNECTION_STATUS', true);
     }
 
@@ -29,7 +28,8 @@ class Crud
             }
 
             $data = $this->hideSelectColumns($columnsToHide, $data);
-        }catch (PDOException $excecao) {
+        } catch (PDOException $exception) {
+            CrudException::throwExceptionCrudPdo($exception);
         }
 
         return $data ? $data : array();
@@ -53,19 +53,20 @@ class Crud
             $pdoStatement = $this->connectionDatabase->prepare($insert);
             $dataReadyToBeSaved = $this->mountBindValue($data, $pdoStatement);
             return $dataReadyToBeSaved->execute();
-        } catch (PDOException $excecao) {
+        } catch (PDOException $exception) {
+            CrudException::throwExceptionCrudPdo($exception);
         }
     }
 
     private function prepareInsert(array $data, string $table, array $columns): string
     {
         $commaSeparatedColumns = '';
-        if(!empty($columns)){
+        if (!empty($columns)) {
             $commaSeparatedColumns = '(' . implode(', ', $columns) . ')';
         }
 
         $parameters = $this->returnsParametersThatWillBeFilled($data);
-        
+
         return <<<SQL
             INSERT INTO {$table} {$commaSeparatedColumns}
             VALUES ({$parameters});
@@ -76,7 +77,7 @@ SQL;
     {
         $columns = [];
         $columnsThatWillBeFilled = array_keys($data);
-        
+
         foreach ($columnsThatWillBeFilled as $columnName) {
             $columns[] = ':' . $columnName;
         }
@@ -91,7 +92,8 @@ SQL;
             $pdoStatement = $this->connectionDatabase->prepare($update);
             $dataReadyToBeUpdated = $this->mountBindValue($data, $pdoStatement);
             return $dataReadyToBeUpdated->execute();
-        } catch (PDOException $excecao) {
+        } catch (PDOException $exception) {
+            CrudException::throwExceptionCrudPdo($exception);
         }
     }
 
@@ -119,7 +121,7 @@ SQL;
 
     public function deleteData(string $table, string $where): bool
     {
-        if(empty($where)){
+        if (empty($where)) {
             throw new Exception("You cannot delete the data without informing the where");
         }
 
@@ -127,7 +129,8 @@ SQL;
             $delete = $this->prepareDelete($table, $where);
             $pdoStatement = $this->connectionDatabase->prepare($delete);
             return $pdoStatement->execute();
-        } catch (PDOException $excecao) {
+        } catch (PDOException $exception) {
+            CrudException::throwExceptionCrudPdo($exception);
         }
     }
 

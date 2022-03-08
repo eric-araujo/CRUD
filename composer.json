@@ -18,11 +18,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Source\\": "Source/"
+            "DBUtil\\": "DBUtil/",
+            "Database\\": "Database/"
         },
         "files": [
-            "Source/Database/ConstantDatabase.php",
-            "Source/Database/LoadEnvGlobalVariable.php"
+            "Database/ConstantDatabase.php",
+            "Database/LoadEnvGlobalVariable.php"
         ]
     }
 }
