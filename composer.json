@@ -1,6 +1,6 @@
 {
     "name": "dbutil/crud",
-    "description": "Basic project to create, read, update and delete data from an application.",
+    "description": "Project to create, read, update and delete data from an application.",
     "license": "MIT",
     "keywords": [
         "create",
@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DBUtil\\": "Source/"
+            "DBUtil\\Crud\\": "Source/"
         }
     }
 }

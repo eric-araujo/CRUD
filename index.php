@@ -4,9 +4,14 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use DBUtil\Crud;
+use DBUtil\Crud\Crud;
 
-$connection = new PDO();//OPEN CONNECTION DATABASE
+//OPEN CONNECTION DATABASE
+$connection = new PDO(
+    'mysql:host=localhost;dbname=agent_atw',
+    'root',
+    '123456',
+);
 
 $crud = new Crud($connection);
 

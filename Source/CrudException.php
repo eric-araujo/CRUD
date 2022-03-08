@@ -1,6 +1,6 @@
 <?php
 
-namespace DBUtil;
+namespace DBUtil\Crud;
 
 use PDOException;
 
