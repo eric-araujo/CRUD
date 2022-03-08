@@ -1,29 +1,30 @@
 {
-    "name": "eric-araujo/crud",
+    "name": "dbutil/crud",
     "description": "Basic project to create, read, update and delete data from an application.",
     "license": "MIT",
+    "keywords": [
+        "create",
+        "read",
+        "update",
+        "delete",
+        "insert",
+        "crud"
+    ],
     "authors": [
         {
             "name": "Eric Araújo Lima",
             "email": "eric.araujolima@hotmail.com",
+            "homepage": "https://www.linkedin.com/in/eric-ara%C3%BAjo-lima-48338615a/",
             "role": "Developer"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "vlucas/phpdotenv": "^5.4"
-    },
-    "config": {
-        "vendor-dir": "vendor"
+        "php": ">=7.0"
     },
     "autoload": {
         "psr-4": {
-            "DBUtil\\": "DBUtil/",
-            "Database\\": "Database/"
-        },
-        "files": [
-            "Database/ConstantDatabase.php",
-            "Database/LoadEnvGlobalVariable.php"
-        ]
+            "DBUtil\\": "Source/"
+        }
     }
 }

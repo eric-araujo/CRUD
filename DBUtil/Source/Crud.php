@@ -1,6 +1,6 @@
 <?php
 
-namespace DBUtil\Source;
+namespace DBUtil;
 
 use PDOException;
 use PDOStatement;
