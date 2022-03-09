@@ -1,5 +1,9 @@
 <h1 align="center">CRUD</h1>
 
+![Badge](https://badges.genua.fr/scrutinizer/quality/g/eric-araujo/CRUD?style=flat-square)
+![Badge](https://img.shields.io/github/repo-size/eric-araujo/crud?style=flat-square)
+![Badge](https://img.shields.io/github/license/eric-araujo/crud?style=flat-square)
+
 ## 📄 Project Description
 <p>Project to create, read, update and delete data from an application.</p>
 
