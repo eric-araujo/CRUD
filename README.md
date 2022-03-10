@@ -29,12 +29,6 @@ $crud = new Crud($connection);
 ```php
 $selectUsers = "SELECT * FROM users WHERE ic_status = true ORDER BY dt_include DESC";
 
-$removeColumn = array("nm_password");
-
-$results = $crud->selectData($selectUsers, $removeColumn);
-
-//OR
-
 $results = $crud->selectData($selectUsers);
 ```
 
