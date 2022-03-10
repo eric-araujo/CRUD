@@ -8,6 +8,6 @@ class CrudException
 {
     public static function throwExceptionCrudPdo(PDOException $pdoException): void
     {
-        throw new PDOException($pdoException->getMessage(), $pdoException->getCode());
+        throw new PDOException("ERROR: " . $pdoException->getMessage());
     }
 }

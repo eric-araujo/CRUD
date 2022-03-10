@@ -17,7 +17,7 @@ class Crud
         define('DATABASE_CONNECTION_STATUS', true);
     }
 
-    public function selectData(string $select, array $columnsToHide = array()): array
+    public function selectData(string $select): array
     {
         $data = [];
         try {
@@ -26,24 +26,11 @@ class Crud
             foreach ($result->fetchAll() as $columnName => $value) {
                 $data[$columnName] = $value;
             }
-
-            $data = $this->hideSelectColumns($columnsToHide, $data);
         } catch (PDOException $exception) {
             CrudException::throwExceptionCrudPdo($exception);
         }
 
         return $data ? $data : array();
-    }
-
-    private function hideSelectColumns(array $columnsToHide, array $data): array
-    {
-        foreach ($data as $information) {
-            foreach ($columnsToHide as $columnToHide) {
-                unset($information->{$columnToHide});
-            }
-        }
-
-        return $data;
     }
 
     public function saveData(array $data, string $table, array $columns = []): bool

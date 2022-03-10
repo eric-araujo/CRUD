@@ -10,18 +10,19 @@ use DBUtil\Crud\Crud;
 $connection = new PDO(
     'mysql:host=localhost;dbname=agent_atw',
     'root',
-    '123456',
+    '123456'
 );
 
 $crud = new Crud($connection);
 
 // SELECT DATA
 
-$objectData = $crud->selectData("SELECT * FROM usuarios WHERE ic_status = true ORDER BY dt_inclusao DESC", array("nm_senha"));
+$selectUsers = "SELECT * FROM usuarios WHERE ic_status = true ORDER BY dt_inclusao DESC";
 
-foreach ($objectData as $value){
-    var_dump($value);
-}
+$results = $crud->selectData($selectUsers);
+
+echo "<pre>";
+var_dump($results);
 die;
 
 // SAVE DATA
@@ -32,18 +33,39 @@ $data = array(
     "nm_senha" => "123456"
 );
 
-$saved = $crud->saveData($data, 'usuarios', array_keys($data));
+$table = "usuarios";
+
+$columnsThatWillBeFilled = array(
+    "nm_usuario",
+    "nm_email",
+    "nm_senha",
+);
+
+$saved = $crud->saveData($data, $table, $columnsThatWillBeFilled);
 
 die($saved);
 
 // UPDATE DATA
 
-$updated = $crud->updateData($data, 'usuarios', 'WHERE id_usuario = 4');
+$data = array(
+    "nm_usuario" => "Lic",
+    "nm_email" => "lic@gmail.com.br",
+);
+
+$table = "usuarios";
+
+$where = "WHERE id_usuario = 5 AND ic_status = true";
+
+$updated = $crud->updateData($data, $table, $where);
 
 die($updated);
 
 // REMOVE DATA
 
-$deleted = $crud->deleteData('usuarios', 'WHERE id_usuario = 4');
+$table = "usuarios";
+
+$where = "WHERE id_usuario = 5 AND ic_status = true";
+
+$deleted = $crud->deleteData($table, $where);
 
 die($deleted);
